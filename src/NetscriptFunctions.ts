@@ -34,6 +34,7 @@ import {
   SpecialBladeburnerActionTypeForSleeve,
   GangTaskNameEnum,
   GangMemberUpgradeNameEnum,
+  HashUpgradeEnum,
 } from "@enums";
 import { PromptEvent } from "./ui/React/PromptManager";
 import { GetServer } from "./Server/AllServers";
@@ -142,6 +143,7 @@ export const enums: NSEnums = {
   ProgramName: CompletedProgramName,
   GangTaskName: GangTaskNameEnum,
   GangMemberUpgradeName: GangMemberUpgradeNameEnum,
+  HacknetServerHashUpgrade: HashUpgradeEnum,
 };
 for (const val of Object.values(enums)) Object.freeze(val);
 Object.freeze(enums);
