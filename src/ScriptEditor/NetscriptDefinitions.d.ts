@@ -2164,7 +2164,7 @@ export interface Singularity {
    * - This function returns true when the UI is showing the infiltration UI or the BitVerse.
    *
    * - This function does not take Bladeburner actions into account. You can use {@link Bladeburner.getCurrentAction | getCurrentAction}
-   *  to check if you are performing a Bladeburner action.
+   * to check if you are performing a Bladeburner action.
    *
    * @returns True if the player is currently performing an action, false otherwise.
    */
@@ -2676,8 +2676,8 @@ export interface Singularity {
    * This function returns an array containing the names (as strings) of all Augmentations you have.
    *
    * @param purchased - Specifies whether the returned array should include Augmentations you have purchased but not
-   *   yet installed. By default, this argument is false which means that the return value will NOT have the purchased
-   *   Augmentations.
+   * yet installed. By default, this argument is false which means that the return value will NOT have the purchased
+   * Augmentations.
    * @returns Array containing the names (as strings) of all Augmentations you have.
    */
   getOwnedAugmentations(purchased?: boolean): string[];
@@ -2989,9 +2989,7 @@ export interface Singularity {
    * @remarks
    * RAM cost: 32 GB * 16/4/1
    *
-   * You must have the special augment installed and the required hacking level
-   *   OR
-   * Completed the final black op.
+   * You must have the special augment installed and the required hacking level OR completed the final black op.
    *
    * If you do not want to move on to the next BN and instead stay on the BitVerse screen, you can set nextBN
    * to undefined. Note that with the hacking route, using {@link Singularity.installBackdoor | installBackdoor} is a
@@ -3037,18 +3035,22 @@ export interface CompanyPositionInfo {
 }
 
 /** @public */
-type HacknetServerHashUpgrade =
-  | "Sell for Money"
-  | "Sell for Corporation Funds"
-  | "Reduce Minimum Security"
-  | "Increase Maximum Money"
-  | "Improve Studying"
-  | "Improve Gym Training"
-  | "Exchange for Corporation Research"
-  | "Exchange for Bladeburner Rank"
-  | "Exchange for Bladeburner SP"
-  | "Generate Coding Contract"
-  | "Company Favor";
+type HacknetServerHashUpgradeEnumType = {
+  SellForMoney: "Sell for Money";
+  SellForCorporationFunds: "Sell for Corporation Funds";
+  ReduceMinimumSecurity: "Reduce Minimum Security";
+  IncreaseMaximumMoney: "Increase Maximum Money";
+  ImproveStudying: "Improve Studying";
+  ImproveGymTraining: "Improve Gym Training";
+  ExchangeForCorporationResearch: "Exchange for Corporation Research";
+  ExchangeForBladeburnerRank: "Exchange for Bladeburner Rank";
+  ExchangeForBladeburnerSP: "Exchange for Bladeburner SP";
+  GenerateCodingContract: "Generate Coding Contract";
+  CompanyFavor: "Company Favor";
+};
+
+/** @public */
+type HacknetServerHashUpgrade = _ValueOf<HacknetServerHashUpgradeEnumType>;
 
 /**
  * Hacknet API
@@ -3347,7 +3349,8 @@ export interface Hacknet {
    *
    * This function is only applicable for Hacknet Servers (the upgraded version of a Hacknet Node).
    *
-   * Returns the list of all available hash upgrades that can be used in the spendHashes function.
+   * Returns the list of all available hash upgrades that can be used in the spendHashes function. You can also use
+   * the HacknetServerHashUpgrade property in {@link NSEnums | NSEnums}.
    * @example
    * ```js
    * const upgrades = ns.hacknet.getHashUpgrades(); // ["Sell for Money","Sell for Corporation Funds",...]
@@ -4161,7 +4164,7 @@ export interface CodingContract {
    * @param answer - Attempted solution for the contract. This can be a string formatted like submitting manually, or the answer in the format of the specific contract type.
    * @param filename - Filename of the contract.
    * @param host - Hostname/IP of the server containing the contract. Optional. Defaults to current server if not
-   *   provided.
+   * provided.
    * @returns A reward description string on success, or an empty string on failure.
    */
   attempt(answer: any, filename: string, host?: string): string;
@@ -4267,6 +4270,136 @@ export interface CodingContract {
    * RAM cost: 0 GB
    */
   getContractTypes(): CodingContractName[];
+}
+
+/**
+ * Port API
+ * @public
+ */
+export interface Port {
+  /**
+   * Get all data on a port.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * Get a handle to a Netscript Port.
+   * Ports are shared across all hosts and contents are reset on game restart.
+   *
+   * @param portNumber - Port number. Must be a positive integer.
+   */
+  getHandle(portNumber: number): NetscriptPort;
+
+  /**
+   * Check if a port is full.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * Returns true if the port's data queue is full, and false otherwise.
+   * Ports are shared across all hosts and contents are reset on game restart.
+   *
+   * @param portNumber - Port number. Must be a positive integer.
+   */
+  isFull(portNumber: number): boolean;
+
+  /**
+   * Check if a port is empty.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * Returns true if the port's data queue is empty, and false otherwise.
+   * Ports are shared across all hosts and contents are reset on game restart.
+   *
+   * @param portNumber - Port number. Must be a positive integer.
+   */
+  isEmpty(portNumber: number): boolean;
+
+  /**
+   * Get a copy of the data from a port without popping it.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * This function is used to peek at the data from a port. It returns the
+   * first element in the specified port without removing that element. If
+   * the port is empty, the string “NULL PORT DATA” will be returned.
+   * Ports are shared across all hosts and contents are reset on game restart.
+   *
+   * @param portNumber - Port to peek. Must be a positive integer.
+   * @returns Data in the specified port.
+   */
+  peek(portNumber: number): any;
+
+  /**
+   * Read data from a port.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * Read data from that port. A port is a serialized queue.
+   * This function will remove the first element from that queue and return it.
+   * If the queue is empty, then the string “NULL PORT DATA” will be returned.
+   * Ports are shared across all hosts and contents are reset on game restart.
+   *
+   * @param portNumber - Port to read from. Must be a positive integer.
+   * @returns The data read.
+   */
+  read(portNumber: number): any;
+
+  /**
+   * Write data to a port.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * Write data to the given Netscript port.
+   *
+   * There is a limit on the maximum number of ports, but you won't reach that limit in normal situations. If you do, it
+   * usually means that there is a bug in your script that leaks port data. A port is freed when it does not have any
+   * data in its underlying queue. `ns.port.clear` deletes all data on a port. `ns.port.read` reads the first element in
+   * the port's queue, then removes it from the queue.
+   * Ports are shared across all hosts and contents are reset on game restart.
+   *
+   * @param portNumber - Port to write to. Must be a positive integer.
+   * @param data - Data to write, it's cloned with structuredClone().
+   * @returns The data popped off the queue if it was full, or null if it was not full.
+   */
+  write(portNumber: number, data: any): any;
+
+  /**
+   * Attempt to write to a port.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * Attempts to write data to the specified Netscript port.
+   * If the port is full, the data will not be written.
+   * Otherwise, the data will be written normally.
+   * Ports are shared across all hosts and contents are reset on game restart.
+   *
+   * @param portNumber - Port to attempt to write to. Must be a positive integer.
+   * @param data - Data to write, it's cloned with structuredClone().
+   * @returns True if the data is successfully written to the port, and false otherwise.
+   */
+  tryWrite(portNumber: number, data: any): boolean;
+
+  /**
+   * Listen for a port write.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * Sleeps until the port is written to.
+   * Ports are shared across all hosts and contents are reset on game restart.
+   *
+   * @param port - Port to listen for a write on. Must be a positive integer.
+   */
+  nextWrite(port: number): Promise<void>;
+
+  /**
+   * Clear data from a port.
+   * @remarks
+   * RAM cost: 0 GB
+   *
+   * Delete all data from the underlying queue.
+   *
+   * @param portNumber - Port to clear data from. Must be a positive integer.
+   */
+  clear(portNumber: number): void;
 }
 
 /**
@@ -4573,11 +4706,16 @@ interface DarknetServerDetails {
    * You are supposed to experiment and discover the models.
    */
   modelId: string;
-  /** Static password reminder text set for this server. */
+  /**
+   * Static password reminder text set for this server.
+   *
+   * This is a static hint, which does not change when you try to authenticate with different passwords. For interactive
+   * feedback after attempting authentication, use {@link Darknet.heartbleed | heartbleed()}.
+   */
   passwordHint: string;
   /** Data from the passwordHint, if any. */
   data: string;
-  /** The frequency (in seconds) of the server adding its own messages to its logs, visible with heartBleed(). */
+  /** The frequency (in seconds) of the server adding its own messages to its logs, visible with {@link Darknet.heartbleed | heartbleed()}. */
   logTrafficInterval: number;
   /** The number of characters in the password */
   passwordLength: number;
@@ -4645,8 +4783,9 @@ export interface Darknet {
    * @param password - Password to attempt to authenticate with.
    * @param additionalMsec - Optional. The number of additional milliseconds to add to the run time of the authentication request. Default is 0.
    * @returns A promise that resolves to a {@link DarknetResult} object. The resolved object may contain an optional
-   * property. The type of this property is intentionaly undocumented. You are supposed to experiment and discover the
-   * content of this property.
+   * property. The type of this property is intentionally undocumented. You are supposed to experiment and discover the
+   * content of this property. This property only exists when authenticating with some very special servers. For
+   * interactive feedback after attempting authentication, in most cases, use {@link Darknet.heartbleed | heartbleed()}.
    */
   authenticate(host: string, password: string, additionalMsec?: number): Promise<DarknetResult & { data?: any }>;
 
@@ -5704,8 +5843,8 @@ export interface GoCheat {
  */
 export interface Go {
   /**
-   *  Make a move on the IPvGO subnet game board, and await the opponent's response.
-   *  x:0 y:0 represents the bottom-left corner of the board in the UI.
+   * Make a move on the IPvGO subnet game board, and await the opponent's response.
+   * \{"x":0,"y":0\} represents the bottom-left corner of the board in the UI.
    *
    * @remarks
    * RAM cost: 4 GB
@@ -5727,7 +5866,7 @@ export interface Go {
 
   /**
    * Pass the player's turn rather than making a move, and await the opponent's response. This ends the game if the opponent
-   *   passed on the previous turn, or if the opponent passes on their following turn.
+   * passed on the previous turn, or if the opponent passes on their following turn.
    *
    * This can also be used if you pick up the game in a state where the opponent needs to play next. For example: if BitBurner was
    * closed while waiting for the opponent to make a move, you may need to call passTurn() to get them to play their move on game start.
@@ -5746,8 +5885,8 @@ export interface Go {
   }>;
 
   /**
-   *  Returns a promise that resolves with the success or failure state of your last move, and the AI's response, if applicable.
-   *  x:0 y:0 represents the bottom-left corner of the board in the UI.
+   * Returns a promise that resolves with the success or failure state of your last move, and the AI's response, if applicable.
+   * \{"x":0,"y":0\} represents the bottom-left corner of the board in the UI.
    *
    * @remarks
    * RAM cost: 0 GB
@@ -7394,6 +7533,11 @@ export interface NS {
   readonly cloud: Cloud;
 
   /**
+   * Namespace for {@link Port | port} functions.
+   */
+  readonly port: Port;
+
+  /**
    * Namespace for darknet functions.
    */
   readonly dnet: Darknet;
@@ -7811,17 +7955,17 @@ export interface NS {
    * string with one of these strings:
    *
    * - `"ERROR"`: The whole string will be printed in red. Use this prefix to indicate
-   *   that an error has occurred.
+   * that an error has occurred.
    *
    * - `"SUCCESS"`: The whole string will be printed in green, similar to the default
-   *   theme of the Terminal. Use this prefix to indicate that something is correct.
+   * theme of the Terminal. Use this prefix to indicate that something is correct.
    *
    * - `"WARN"`: The whole string will be printed in yellow. Use this prefix to
-   *   indicate that you or a user of your script should be careful of something.
+   * indicate that you or a user of your script should be careful of something.
    *
    * - `"INFO"`: The whole string will be printed in purplish blue. Use this prefix to
-   *   remind yourself or a user of your script of something. Think of this prefix as
-   *   indicating an FYI (for your information).
+   * remind yourself or a user of your script of something. Think of this prefix as
+   * indicating an FYI (for your information).
    *
    * For custom coloring, use ANSI escape sequences. The examples below use the Unicode
    * escape code `\u001b`. The color coding also works if `\u001b` is replaced with
@@ -8833,6 +8977,10 @@ export interface NS {
 
   /**
    * Attempt to write to a port.
+   *
+   * @deprecated
+   * Use {@link Port.tryWrite | Port.tryWrite} instead.
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -8849,6 +8997,10 @@ export interface NS {
 
   /**
    * Listen for a port write.
+   *
+   * @deprecated
+   * Use {@link Port.nextWrite | Port.nextWrite} instead
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -8894,6 +9046,10 @@ export interface NS {
 
   /**
    * Get a copy of the data from a port without popping it.
+   *
+   * @deprecated
+   * Use {@link Port.peek | Port.peek} instead
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -8920,6 +9076,10 @@ export interface NS {
 
   /**
    * Clear data from a port.
+   *
+   * @deprecated
+   * Use {@link Port.clear | Port.clear} instead
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -8931,6 +9091,10 @@ export interface NS {
 
   /**
    * Write data to a port.
+   *
+   * @deprecated
+   * Use {@link Port.write | Port.write} instead.
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -8950,6 +9114,10 @@ export interface NS {
 
   /**
    * Read data from a port.
+   *
+   * @deprecated
+   * Use {@link Port.read | Port.read} instead
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -8965,6 +9133,10 @@ export interface NS {
 
   /**
    * Get all data on a port.
+   *
+   * @deprecated
+   * Use {@link Port.getHandle | Port.getHandle} instead
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -8981,6 +9153,10 @@ export interface NS {
 
   /**
    * Check if a port is full.
+   *
+   * @deprecated
+   * Use {@link Port.isFull | Port.isFull} instead
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -8993,6 +9169,10 @@ export interface NS {
 
   /**
    * Check if a port is empty.
+   *
+   * @deprecated
+   * Use {@link Port.isEmpty | Port.isEmpty} instead
+   *
    * @remarks
    * RAM cost: 0 GB
    *
@@ -10079,6 +10259,7 @@ type NSEnums = {
   ProgramName: ProgramNameEnumType;
   GangTaskName: GangTaskNameEnumType;
   GangMemberUpgradeName: GangMemberUpgradeNameEnumType;
+  HacknetServerHashUpgrade: HacknetServerHashUpgradeEnumType;
 };
 
 /**

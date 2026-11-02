@@ -1140,6 +1140,17 @@ Base interface of all player tasks.
 </td></tr>
 <tr><td>
 
+[Port](./bitburner.port.md)
+
+
+</td><td>
+
+Port API
+
+
+</td></tr>
+<tr><td>
+
 [ProcessInfo](./bitburner.processinfo.md)
 
 
@@ -2181,6 +2192,16 @@ Locations of gym
 <tr><td>
 
 [HacknetServerHashUpgrade](./bitburner.hacknetserverhashupgrade.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[HacknetServerHashUpgradeEnumType](./bitburner.hacknetserverhashupgradeenumtype.md)
 
 
 </td><td>
