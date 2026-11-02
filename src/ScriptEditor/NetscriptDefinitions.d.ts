@@ -7394,7 +7394,7 @@ export interface NS {
   readonly cloud: Cloud;
 
   /**
-   * Namespace for darknet functions. Some of this namespace contains spoilers.
+   * Namespace for darknet functions.
    */
   readonly dnet: Darknet;
 

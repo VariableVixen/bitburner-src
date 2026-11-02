@@ -173,7 +173,7 @@ Namespace for [corporation](./bitburner.corporation.md) functions. This namespac
 
 </td><td>
 
-Namespace for darknet functions. Some of this namespace contains spoilers.
+Namespace for darknet functions.
 
 
 </td></tr>

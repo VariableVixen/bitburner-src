@@ -4,7 +4,7 @@
 
 ## NS.dnet property
 
-Namespace for darknet functions. Some of this namespace contains spoilers.
+Namespace for darknet functions.
 
 **Signature:**
 
